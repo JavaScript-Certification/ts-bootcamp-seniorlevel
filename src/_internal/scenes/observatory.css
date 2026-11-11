@@ -1,0 +1,231 @@
+/* Exercise 6 scene: the night observatory. Everything is scoped under .ob-root */
+.ob-root {
+  --ob-night: #0b0d1f;
+  --ob-ink: #f4f3ff;
+  --ob-muted: #b4bbdf;
+  --ob-accent: #a9b8ff;
+  --ob-yellow: #f1dd35;
+  --ob-green: #4be0a6;
+  margin-top: 28px;
+  display: grid;
+  gap: 16px;
+  font-family: "Open Sans", system-ui, sans-serif;
+  color: var(--ob-ink);
+}
+
+.ob-root .ob-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ob-root code {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-weight: 500;
+}
+
+/* ---------- stage ---------- */
+
+.ob-root .ob-stage {
+  position: relative;
+  height: 460px;
+}
+
+.ob-root .ob-picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ob-root .ob-faint circle {
+  fill: #dfe3ff;
+  opacity: 0.55;
+  animation: ob-twinkle 6s ease-in-out infinite;
+}
+
+.ob-root .ob-figures line {
+  stroke: var(--ob-accent);
+  stroke-opacity: 0.4;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.ob-root .ob-star-name {
+  font: 600 15px "Open Sans", system-ui, sans-serif;
+  fill: var(--ob-muted);
+}
+
+.ob-root .ob-ring {
+  fill: none;
+  stroke: var(--ob-yellow);
+  stroke-width: 1.6;
+}
+
+.ob-root .ob-tag rect {
+  fill: rgb(11 13 31 / 0.88);
+  stroke: rgb(169 184 255 / 0.35);
+  stroke-width: 1;
+}
+
+.ob-root .ob-tag line {
+  stroke: rgb(169 184 255 / 0.45);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 4;
+}
+
+.ob-root .ob-tag text {
+  font: 500 13px "JetBrains Mono", ui-monospace, monospace;
+  fill: var(--ob-muted);
+}
+
+.ob-root .ob-tag-value {
+  font-weight: 700;
+  fill: var(--ob-yellow);
+}
+
+/* toolbar: the sweep button */
+.ob-root .ob-toolbar {
+  position: absolute;
+  inset: 14px 14px auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.ob-root .ob-sweep {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ob-yellow);
+  color: var(--ob-night);
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.35);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.ob-root .ob-sweep:hover {
+  background: #f6e866;
+  transform: translateY(-1px);
+}
+
+.ob-root .ob-sweep:active {
+  transform: translateY(1px);
+}
+
+.ob-root .ob-sweep:focus-visible {
+  outline: 3px solid var(--ob-ink);
+  outline-offset: 3px;
+}
+
+/* the waiting card floats beside the dome, so each change on the dome stays in sight */
+.ob-root .ob-waiting {
+  position: absolute;
+  left: 25%;
+  bottom: 44px;
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: max-content;
+  max-width: min(290px, calc(50% - 16px));
+  box-sizing: border-box;
+  padding: 14px 20px;
+  border-radius: 14px;
+  background: rgb(11 13 31 / 0.92);
+  border: 1px dashed rgb(241 221 53 / 0.6);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ob-muted);
+}
+
+.ob-root .ob-waiting[hidden] {
+  display: none;
+}
+
+.ob-root .ob-waiting strong {
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 1.05rem;
+  color: var(--ob-yellow);
+}
+
+.ob-root .ob-waiting-icon {
+  width: 26px;
+  height: 26px;
+  color: var(--ob-yellow);
+}
+
+/* ---------- caption under the stage ---------- */
+
+.ob-root .ob-caption {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+}
+
+.ob-root .ob-caption p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--ob-muted);
+  font-size: 0.95rem;
+}
+
+.ob-root .ob-caption-latest {
+  font-size: 1rem;
+}
+
+.ob-root .ob-caption-latest code {
+  color: var(--ob-ink);
+}
+
+.ob-root .ob-caption-latest .ob-icon,
+.ob-root .ob-caption-status.is-waiting .ob-icon,
+.ob-root .ob-caption-status.is-waiting strong {
+  color: var(--ob-yellow);
+}
+
+.ob-root .ob-caption-status .ob-icon {
+  color: var(--ob-green);
+}
+
+.ob-root .ob-caption-status.is-error,
+.ob-root .ob-caption-status.is-error .ob-icon {
+  color: #ffb4ab;
+}
+
+@keyframes ob-twinkle {
+  50% {
+    opacity: 0.18;
+  }
+}
+
+@media (max-width: 860px) {
+  .ob-root .ob-stage {
+    height: 380px;
+  }
+
+  .ob-root .ob-waiting {
+    bottom: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob-root .ob-faint circle {
+    animation: none;
+  }
+}

@@ -1,0 +1,327 @@
+/* Exercise 3 scene: the pixel arcade cabinet. Everything is scoped under .ac-root */
+.ac-root {
+  position: relative;
+  --ac-plum: #23092b;
+  --ac-pink: #ff8ad8;
+  --ac-yellow: #f1dd35;
+  --ac-text: #faf9f8;
+  --ac-muted: #cdb6d6;
+  --ac-green: #4be0a6;
+  --ac-red: #ffb4ab;
+  margin-top: 24px;
+  display: grid;
+  gap: 14px;
+  font-family: "Open Sans", system-ui, sans-serif;
+  color: var(--ac-text);
+}
+
+.ac-root .ac-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ac-root code {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-weight: 500;
+}
+
+/* ---------- the yellow button above the cabinet ---------- */
+
+.ac-root .ac-toolbar {
+  display: flex;
+  padding-left: 14px;
+}
+
+/* wide pages: the button floats at the top left of the stage, beside the cabinet */
+@media (min-width: 760px) {
+  .ac-root .ac-toolbar {
+    position: absolute;
+    z-index: 1;
+  }
+}
+
+.ac-root .ac-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ac-yellow);
+  color: var(--ac-plum);
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.3);
+  transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+}
+
+.ac-root .ac-play:hover {
+  background: #f6e866;
+  transform: translateY(-1px);
+}
+
+.ac-root .ac-play:active {
+  transform: translateY(1px);
+}
+
+.ac-root .ac-play:disabled {
+  opacity: 0.7;
+  cursor: progress;
+  transform: none;
+}
+
+.ac-root .ac-play:focus-visible {
+  outline: 3px solid var(--ac-text);
+  outline-offset: 3px;
+}
+
+/* ---------- stage and cabinet ---------- */
+
+.ac-root .ac-stage {
+  position: relative;
+  height: 440px;
+}
+
+.ac-root .ac-cabinet {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 420px;
+  height: 440px;
+  transform: translateX(-50%) scale(var(--ac-scale, 1));
+  transform-origin: top center;
+}
+
+.ac-root .ac-body {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.ac-root .ac-key {
+  fill: #c8a9d6;
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-anchor: middle;
+}
+
+/* the marquee: brighter with each finished step */
+.ac-root .ac-marquee {
+  position: absolute;
+  left: 54px;
+  top: 24px;
+  width: 312px;
+  height: 36px;
+  image-rendering: pixelated;
+  opacity: 0.45;
+  transition: opacity 0.6s ease, filter 0.6s ease;
+}
+
+.ac-root [data-steps="1"] .ac-marquee { opacity: 0.62; }
+.ac-root [data-steps="2"] .ac-marquee { opacity: 0.8; }
+
+.ac-root [data-steps="3"] .ac-marquee {
+  opacity: 1;
+  filter: drop-shadow(0 0 6px rgb(255 138 216 / 0.75));
+  animation: ac-neon 3.2s ease-in-out infinite;
+}
+
+/* the screen: 160 by 112 pixels, drawn twice as large */
+.ac-root .ac-screen,
+.ac-root .ac-glass {
+  position: absolute;
+  left: 50px;
+  top: 86px;
+  width: 320px;
+  height: 224px;
+  border-radius: 10px;
+}
+
+.ac-root .ac-screen {
+  image-rendering: pixelated;
+  box-shadow: 0 0 22px rgb(255 138 216 / 0.18);
+  transition: opacity 0.25s ease;
+}
+
+.ac-root .ac-glass {
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(to bottom, rgb(0 0 0 / 0) 0 2px, rgb(0 0 0 / 0.16) 2px 4px),
+    radial-gradient(ellipse at 50% 40%, rgb(255 255 255 / 0.05), rgb(0 0 0 / 0.35) 100%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.04);
+  transition: box-shadow 0.6s ease;
+}
+
+.ac-root .is-off .ac-screen {
+  opacity: 0.25;
+}
+
+/* step 3: the cheat lights the frame of the screen */
+.ac-root .is-cheat .ac-glass {
+  box-shadow: inset 0 0 0 2px rgb(255 138 216 / 0.7), 0 0 26px rgb(255 138 216 / 0.45);
+}
+
+/* joystick and buttons follow the combo */
+.ac-root .ac-stick {
+  transform-box: view-box;
+  transform-origin: 120px 356px;
+  transition: transform 0.12s ease-out;
+}
+
+.ac-root .ac-stick.is-left { transform: rotate(-20deg); }
+.ac-root .ac-stick.is-right { transform: rotate(20deg); }
+.ac-root .ac-stick.is-up { transform: translateY(-4px); }
+.ac-root .ac-stick.is-down { transform: scaleY(0.78); }
+
+.ac-root .ac-cap {
+  transform-box: fill-box;
+  transition: transform 0.1s ease-out, filter 0.1s ease-out;
+}
+
+.ac-root .is-pressed .ac-cap {
+  transform: translateY(3px);
+  filter: brightness(1.25) drop-shadow(0 0 6px rgb(255 138 216 / 0.9));
+}
+
+/* the coin slots, and the coin that drops in */
+.ac-root .ac-slot {
+  fill: var(--ac-pink);
+  filter: drop-shadow(0 0 4px rgb(255 138 216 / 0.8));
+}
+
+.ac-root .ac-coin {
+  fill: var(--ac-yellow);
+  stroke: #c9b21d;
+  stroke-width: 2;
+  opacity: 0;
+}
+
+.ac-root .is-coin .ac-coin {
+  animation: ac-coin 0.5s ease-in;
+}
+
+/* ---------- the card that waits for a step, over the screen ---------- */
+
+.ac-root .ac-waiting {
+  position: absolute;
+  left: 50%;
+  top: 140px;
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: max-content;
+  max-width: min(320px, calc(100% - 32px));
+  box-sizing: border-box;
+  padding: 16px 22px;
+  border-radius: 14px;
+  background: rgb(35 9 43 / 0.94);
+  border: 1px dashed rgb(241 221 53 / 0.6);
+  box-shadow: 0 12px 28px rgb(0 0 0 / 0.4);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ac-muted);
+}
+
+.ac-root .ac-waiting[hidden] {
+  display: none;
+}
+
+.ac-root .ac-waiting strong {
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 1.05rem;
+  color: var(--ac-yellow);
+}
+
+.ac-root .ac-waiting-icon {
+  width: 26px;
+  height: 26px;
+  color: var(--ac-yellow);
+}
+
+/* ---------- caption under the cabinet ---------- */
+
+.ac-root .ac-caption {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+}
+
+.ac-root .ac-caption p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--ac-muted);
+  font-size: 0.95rem;
+}
+
+.ac-root .ac-caption-latest {
+  font-size: 1rem;
+}
+
+.ac-root .ac-caption-latest code {
+  color: var(--ac-text);
+}
+
+.ac-root .ac-caption-latest .ac-icon,
+.ac-root .ac-caption-status.is-waiting .ac-icon,
+.ac-root .ac-caption-status.is-waiting strong {
+  color: var(--ac-yellow);
+}
+
+.ac-root .ac-caption-status .ac-icon {
+  color: var(--ac-green);
+}
+
+.ac-root .ac-caption-status.is-error,
+.ac-root .ac-caption-status.is-error .ac-icon {
+  color: var(--ac-red);
+}
+
+@keyframes ac-coin {
+  0% {
+    opacity: 1;
+    transform: translateY(-34px);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}
+
+@keyframes ac-neon {
+  50% {
+    filter: drop-shadow(0 0 10px rgb(255 138 216 / 0.95));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-root [data-steps="3"] .ac-marquee,
+  .ac-root .is-coin .ac-coin {
+    animation: none;
+  }
+
+  .ac-root .ac-stick,
+  .ac-root .ac-cap,
+  .ac-root .ac-marquee,
+  .ac-root .ac-glass {
+    transition: none;
+  }
+}

@@ -1,0 +1,468 @@
+/* Fonts of the JavaScript bootcamp: Montserrat for titles, Open Sans for text, JetBrains Mono for output */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@400;600;700&family=JetBrains+Mono:wght@500&display=block");
+
+:root {
+  color-scheme: dark;
+  --bg: #00273f;
+  --surface: #0b3553;
+  --surface-2: #164466;
+  --text: #faf9f8;
+  --muted: #a9bdcf;
+  --ts-blue: #3178c6;
+  --ts-blue-light: #358ef1;
+  --ts-yellow: #f1dd35;
+  --green: #4be0a6;
+  font-family: "Open Sans", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  transition: background-color 0.4s ease;
+}
+
+/* one calm, dark background per exercise, in the hue of its world; the header stays TypeScript blue */
+body[data-theme="aquarium"] { --bg: #04263a; --accent: #5fd4ff; }
+body[data-theme="greenhouse"] { --bg: #0e2414; --accent: #8ee07a; }
+body[data-theme="arcade"] { --bg: #23092b; --accent: #ff8ad8; }
+body[data-theme="balloon"] { --bg: #0b2238; --accent: #ffa45c; }
+body[data-theme="lighthouse"] { --bg: #101c26; --accent: #ffe066; }
+body[data-theme="observatory"] { --bg: #0b0d1f; --accent: #a9b8ff; }
+body[data-theme="hut"] { --bg: #1a2421; --accent: #ff8f6b; }
+
+/* a thin line in the exercise colour under the header */
+body[data-theme] .topbar {
+  box-shadow: inset 0 -4px var(--accent);
+}
+
+a {
+  color: inherit;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ts-yellow);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* header */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 14px 32px;
+  background: var(--ts-blue);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  margin-right: auto;
+}
+
+.brand-badge {
+  font-family: "Montserrat", system-ui, sans-serif;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--text);
+  color: var(--ts-blue);
+  font-weight: 800;
+  font-size: 0.95rem;
+}
+
+.brand-name {
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 1.05rem;
+}
+
+/* begin / end switch */
+.switch {
+  display: flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgb(0 39 63 / 0.35);
+}
+
+.switch-option {
+  padding: 6px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.switch-option[aria-current='page'] {
+  background: var(--text);
+  color: var(--ts-blue);
+}
+
+/* menu of every exercise */
+.menu {
+  position: relative;
+}
+
+.menu-button {
+  list-style: none;
+  cursor: pointer;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 2px solid rgb(250 249 248 / 0.6);
+  font-weight: 600;
+  user-select: none;
+}
+
+.menu-button::-webkit-details-marker {
+  display: none;
+}
+
+.menu-button::after {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 10px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  rotate: 45deg;
+  translate: 0 -3px;
+  transition: rotate 0.2s ease;
+}
+
+.menu[open] .menu-button::after {
+  rotate: 225deg;
+  translate: 0 2px;
+}
+
+.menu-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: 420px;
+  padding: 8px;
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.35);
+}
+
+.menu-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.menu-row.is-current {
+  background: var(--surface-2);
+}
+
+.menu-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.menu-icon {
+  width: 22px;
+  height: 22px;
+  fill: var(--ts-blue-light);
+  flex: none;
+}
+
+.menu-button,
+.menu-link,
+.switch-option,
+.brand {
+  cursor: pointer;
+}
+
+.menu-link {
+  padding: 4px 12px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--muted);
+  border: 1px solid var(--surface-2);
+}
+
+.menu-link:hover,
+.menu-link[aria-current='page'] {
+  color: var(--bg);
+  background: var(--text);
+  border-color: var(--text);
+}
+
+/* page */
+.page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 48px 32px 64px;
+}
+
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.tag {
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.tag--begin {
+  background: var(--ts-yellow);
+  color: var(--bg);
+}
+
+.tag--end {
+  background: var(--green);
+  color: var(--bg);
+}
+
+h1 {
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 2.6rem;
+  line-height: 1.1;
+  margin: 0 0 12px;
+}
+
+h1 + p {
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* ---------- error panel: type errors and runtime errors ---------- */
+
+.problems {
+  margin: 28px 0 0;
+  border-radius: 14px;
+  background: #3a0f1a;
+  border: 2px solid #ff7b72;
+  overflow: hidden;
+}
+
+.problem-block + .problem-block {
+  border-top: 2px solid rgb(255 123 114 / 0.4);
+}
+
+.problem-block {
+  padding: 18px 22px;
+}
+
+.problem-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 1.1rem;
+  color: #ffd2cf;
+}
+
+.problem-icon {
+  width: 26px;
+  height: 26px;
+  fill: #ff7b72;
+  flex: none;
+}
+
+.problem-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.problem {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: start;
+  gap: 6px 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgb(0 0 0 / 0.25);
+}
+
+.problem-where {
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+a.problem-where {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.problem-code {
+  font: 700 0.85rem "JetBrains Mono", monospace;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #ff7b72;
+  color: #2b0a10;
+}
+
+.problem-message {
+  grid-column: 1 / -1;
+  margin: 0;
+  white-space: pre-wrap;
+  font: 500 0.95rem/1.5 "JetBrains Mono", monospace;
+  color: #ffe9e7;
+}
+
+.problem-frame {
+  grid-column: 1 / -1;
+  margin: 4px 0 0;
+  padding: 10px 12px;
+  overflow-x: auto;
+  border-radius: 8px;
+  background: rgb(0 0 0 / 0.3);
+  font: 500 0.85rem/1.5 "JetBrains Mono", monospace;
+  color: #ffd2cf;
+}
+
+.problem-block--runtime .problem-message {
+  grid-column: auto / -1;
+}
+
+.problem-hint {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+  color: #ffbdb8;
+}
+
+/* ---------- the board: one look per exercise ---------- */
+
+.board {
+  --board-bg: var(--surface);
+  --board-ink: var(--text);
+  --board-accent: var(--ts-blue-light);
+  --line-bg: var(--surface-2);
+  margin-top: 28px;
+  border-radius: 18px;
+  background: var(--board-bg);
+  color: var(--board-ink);
+  padding: 22px 24px 26px;
+}
+
+.board-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.board-icon {
+  width: 34px;
+  height: 34px;
+  fill: var(--board-accent);
+  flex: none;
+}
+
+.board-title {
+  margin: 0;
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 1.25rem;
+}
+
+.board-count {
+  margin-left: auto;
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+#output {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+  font: 500 1.15rem/1.5 "JetBrains Mono", ui-monospace, monospace;
+  font-variant-ligatures: none;
+}
+
+#output li {
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: var(--line-bg);
+  border-left: 5px solid var(--board-accent);
+  overflow-wrap: anywhere;
+}
+
+.board.is-empty #output::before {
+  content: "Nothing here yet. The board fills in as you complete the steps.";
+  font-family: "Open Sans", system-ui, sans-serif;
+  font-style: italic;
+  opacity: 0.75;
+}
+
+/* 1. Charging Station Board: station tiles with an energy accent */
+
+/* 2. Food Truck Rally: a cream menu board with brown ink */
+
+/* 3. Moonline Night Train: tickets with a perforated edge */
+
+/* 4. Escape Room Control Desk: amber text on a dark desk */
+
+/* 5. Mars Rover Uplink: a terminal with a Mars red prompt */
+
+/* 6. Karaoke Night: a neon setlist, numbered */
+
+/* 7. Rooftop Cinema: a marquee lined with bulbs */
+
+@media (max-width: 700px) {
+  .topbar {
+    flex-wrap: wrap;
+    padding: 12px 16px;
+  }
+
+  .page {
+    padding: 32px 16px 48px;
+  }
+
+  .menu-panel {
+    width: min(420px, calc(100vw - 32px));
+  }
+
+  .problem {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

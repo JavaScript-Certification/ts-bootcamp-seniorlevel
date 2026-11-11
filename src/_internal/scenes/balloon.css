@@ -1,0 +1,294 @@
+/* Exercise 4 scene: the launch field at dusk. Everything is scoped under .hb-root */
+.hb-root {
+  --hb-night: #0b2238;
+  --hb-panel: rgb(8 26 44 / 0.9);
+  --hb-line: rgb(255 228 200 / 0.2);
+  --hb-accent: #ffa45c;
+  --hb-yellow: #f1dd35;
+  --hb-text: #faf9f8;
+  --hb-muted: #b4c3d3;
+  --hb-green: #4be0a6;
+  --hb-red: #ff6f61;
+  margin-top: 28px;
+  display: grid;
+  gap: 16px;
+  font-family: "Open Sans", system-ui, sans-serif;
+  color: var(--hb-text);
+}
+
+.hb-root .hb-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hb-root code {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-weight: 500;
+}
+
+/* ---------- stage ---------- */
+
+.hb-root .hb-stage {
+  position: relative;
+  height: 440px;
+  overflow: hidden;
+  border-radius: 18px;
+  /* the last light of the sunset, low on the horizon */
+  background: radial-gradient(120% 70% at 70% 100%, rgb(255 164 92 / 0.16), rgb(255 164 92 / 0) 70%);
+}
+
+.hb-root .hb-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hb-root .hb-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hb-root .hb-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.hb-root .hb-label[hidden] {
+  display: none;
+}
+
+.hb-root .hb-label-key {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--hb-muted);
+}
+
+.hb-root .hb-label strong {
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 0.9rem;
+}
+
+/* ceiling and cloud base: small pills on their lines */
+.hb-root .hb-ceiling-label,
+.hb-root .hb-cloud-label {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--hb-panel);
+  border: 1px solid var(--hb-line);
+}
+
+.hb-root .hb-ceiling-label {
+  transform: translate(var(--x), var(--y)) translate(0, -50%);
+  color: var(--hb-accent);
+  border-color: rgb(255 164 92 / 0.45);
+}
+
+.hb-root .hb-ceiling-label.is-wrong {
+  color: var(--hb-red);
+  border-color: rgb(255 111 97 / 0.55);
+}
+
+.hb-root .hb-label-note {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* cloud base: in feet, as the met office gives it */
+.hb-root .hb-cloud-label {
+  transform: translate(var(--x), var(--y)) translate(-100%, -50%);
+  color: var(--hb-text);
+}
+
+/* peak and toast: small cards under the trail */
+.hb-root .hb-peak-label,
+.hb-root .hb-toast-label {
+  padding: 7px 12px;
+  border-radius: 12px;
+  background: var(--hb-panel);
+  border: 1px solid var(--hb-line);
+  box-shadow: 0 8px 18px rgb(0 0 0 / 0.3);
+  animation: hb-pop 0.4s ease-out;
+}
+
+.hb-root .hb-peak-label {
+  transform: translate(var(--x), var(--y)) translate(calc(-100% - 14px), -50%);
+  border-top: 3px solid var(--hb-accent);
+}
+
+.hb-root .hb-reading {
+  font-size: 0.9rem;
+  color: var(--hb-text);
+}
+
+.hb-root .hb-reading-sep {
+  color: var(--hb-muted);
+}
+
+.hb-root .hb-toast-label {
+  transform: translate(var(--x), var(--y)) translate(calc(-100% - 8px), 16px);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.hb-root .hb-toast-icon {
+  color: #ffd27a;
+}
+
+/* toolbar: the replay button */
+.hb-root .hb-toolbar {
+  position: absolute;
+  inset: 14px 14px auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.hb-root .hb-replay {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--hb-yellow);
+  color: var(--hb-night);
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.3);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.hb-root .hb-replay:hover {
+  background: #f6e866;
+  transform: translateY(-1px);
+}
+
+.hb-root .hb-replay:active {
+  transform: translateY(1px);
+}
+
+.hb-root .hb-replay:focus-visible {
+  outline: 3px solid var(--hb-text);
+  outline-offset: 3px;
+}
+
+/* the empty plan waits for its steps */
+.hb-root .hb-waiting {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  max-width: 400px;
+  padding: 16px 22px;
+  border-radius: 14px;
+  background: var(--hb-panel);
+  border: 1px dashed rgb(241 221 53 / 0.6);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--hb-muted);
+}
+
+.hb-root .hb-waiting[hidden] {
+  display: none;
+}
+
+.hb-root .hb-waiting strong {
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 1.05rem;
+  color: var(--hb-yellow);
+}
+
+.hb-root .hb-waiting-icon {
+  width: 26px;
+  height: 26px;
+  color: var(--hb-yellow);
+}
+
+.hb-root .hb-no-webgl .hb-waiting {
+  top: 40%;
+}
+
+/* ---------- caption under the stage ---------- */
+
+.hb-root .hb-caption {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+}
+
+.hb-root .hb-caption p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--hb-muted);
+  font-size: 0.95rem;
+}
+
+.hb-root .hb-caption-latest {
+  font-size: 1rem;
+}
+
+.hb-root .hb-caption-latest code {
+  color: var(--hb-text);
+}
+
+.hb-root .hb-caption-latest .hb-icon {
+  color: var(--hb-accent);
+}
+
+.hb-root .hb-caption-status.is-waiting .hb-icon,
+.hb-root .hb-caption-status.is-waiting strong {
+  color: var(--hb-yellow);
+}
+
+.hb-root .hb-caption-status .hb-icon {
+  color: var(--hb-green);
+}
+
+.hb-root .hb-caption-status.is-error,
+.hb-root .hb-caption-status.is-error .hb-icon {
+  color: #ffb4ab;
+}
+
+@keyframes hb-pop {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 860px) {
+  .hb-root .hb-stage {
+    height: 360px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-root .hb-peak-label,
+  .hb-root .hb-toast-label {
+    animation: none;
+  }
+}

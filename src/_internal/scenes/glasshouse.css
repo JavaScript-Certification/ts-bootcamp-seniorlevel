@@ -1,0 +1,277 @@
+/* Exercise 2 scene: the glasshouse. Everything is scoped under .gh-root */
+.gh-root {
+  --gh-bg: #0e2414;
+  --gh-line: rgb(190 230 190 / 0.22);
+  --gh-accent: #8ee07a;
+  --gh-yellow: #f1dd35;
+  --gh-text: #f6f8f2;
+  --gh-muted: #a9c2ae;
+  --gh-red: #ffb4ab;
+  margin-top: 28px;
+  display: grid;
+  gap: 16px;
+  font-family: "Open Sans", system-ui, sans-serif;
+  color: var(--gh-text);
+}
+
+.gh-root .gh-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gh-root code {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-weight: 500;
+  font-variant-ligatures: none;
+}
+
+/* ---------- stage ---------- */
+
+.gh-root .gh-stage {
+  position: relative;
+  height: 440px;
+  overflow: hidden;
+}
+
+.gh-root .gh-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.gh-root .gh-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.gh-root .gh-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+}
+
+/* a sensor tag: one short line (the reading, then what the handler did) and a faint hint
+   naming the concept (the inferred type, then the remapped handler name). Full detail on hover */
+.gh-root .gh-tag {
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  width: max-content;
+  max-width: 190px;
+  padding: 4px 10px 5px;
+  border-radius: 8px;
+  background: rgb(10 31 16 / 0.78);
+  border: 1px solid var(--gh-line);
+  pointer-events: auto;
+  cursor: default;
+  text-align: center;
+  white-space: nowrap;
+  transition: border-color 0.4s ease;
+}
+
+.gh-root .gh-tag.is-live {
+  border-color: rgb(142 224 122 / 0.45);
+}
+
+.gh-root .gh-tag-line {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--gh-muted);
+}
+
+.gh-root .gh-tag.is-live .gh-tag-value {
+  color: var(--gh-text);
+  font-weight: 600;
+}
+
+.gh-root .gh-tag-dot {
+  color: var(--gh-muted);
+}
+
+.gh-root .gh-effect.is-on {
+  color: var(--gh-yellow);
+}
+
+.gh-root .gh-tag-hint {
+  font-size: 0.64rem;
+  color: rgb(169 194 174 / 0.7);
+}
+
+.gh-root .gh-label[hidden] {
+  display: none;
+}
+
+/* toolbar: the run button and the clock */
+.gh-root .gh-toolbar {
+  position: absolute;
+  inset: 14px 14px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.gh-root .gh-run {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--gh-yellow);
+  color: #0e2414;
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.3);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.gh-root .gh-run:hover {
+  background: #f6e866;
+  transform: translateY(-1px);
+}
+
+.gh-root .gh-run:active {
+  transform: translateY(1px);
+}
+
+.gh-root .gh-run:focus-visible {
+  outline: 3px solid var(--gh-text);
+  outline-offset: 3px;
+}
+
+/* the clock: a tiny, quiet time of day */
+.gh-root .gh-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--gh-muted);
+}
+
+.gh-root .gh-clock .gh-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* the card that floats over the glasshouse while a step is missing */
+.gh-root .gh-waiting {
+  position: absolute;
+  left: 50%;
+  top: 24%;
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: max-content;
+  max-width: min(340px, calc(100% - 48px));
+  padding: 16px 22px;
+  border-radius: 14px;
+  background: rgb(10 31 16 / 0.92);
+  border: 1px dashed rgb(241 221 53 / 0.6);
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--gh-muted);
+}
+
+.gh-root .gh-waiting[hidden] {
+  display: none;
+}
+
+.gh-root .gh-waiting strong {
+  font-family: "Montserrat", system-ui, sans-serif;
+  font-size: 1.05rem;
+  color: var(--gh-yellow);
+}
+
+.gh-root .gh-waiting-icon {
+  width: 26px;
+  height: 26px;
+  color: var(--gh-yellow);
+}
+
+.gh-root .gh-no-webgl .gh-waiting {
+  top: 40%;
+}
+
+/* ---------- caption under the stage ---------- */
+
+.gh-root .gh-caption {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+}
+
+.gh-root .gh-caption p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--gh-muted);
+  font-size: 0.95rem;
+}
+
+.gh-root .gh-caption-latest {
+  font-size: 1rem;
+}
+
+.gh-root .gh-caption-latest code {
+  color: var(--gh-text);
+}
+
+.gh-root .gh-caption-latest .gh-icon {
+  color: var(--gh-accent);
+}
+
+.gh-root .gh-caption-status.is-waiting .gh-icon,
+.gh-root .gh-caption-status.is-waiting strong {
+  color: var(--gh-yellow);
+}
+
+.gh-root .gh-caption-status .gh-icon {
+  color: var(--gh-accent);
+}
+
+.gh-root .gh-caption-status.is-error,
+.gh-root .gh-caption-status.is-error .gh-icon {
+  color: var(--gh-red);
+}
+
+@media (max-width: 860px) {
+  .gh-root .gh-stage {
+    height: 410px;
+  }
+
+  .gh-root .gh-tag {
+    padding: 3px 7px 4px;
+  }
+
+  .gh-root .gh-tag-line {
+    font-size: 0.68rem;
+  }
+
+  .gh-root .gh-tag-hint {
+    font-size: 0.58rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gh-root .gh-tag,
+  .gh-root .gh-run {
+    transition: none;
+  }
+}

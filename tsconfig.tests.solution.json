@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.tests.json",
+  "compilerOptions": {
+    "paths": {
+      "#exercise/*": [
+        "./src/*-end.ts"
+      ]
+    }
+  }
+}
